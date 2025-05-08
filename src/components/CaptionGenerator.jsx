@@ -4,13 +4,11 @@ const OPENAI_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 const OPENAI_API_KEY = import.meta.env.VITE_OPEN_ROUTER_AI_API_KEY;
 console.log("API Key", OPENAI_API_KEY);
 
-export const generateCaptions = async ({ image, description }) => {
-  if (!description && !image) return [];
+export const generateCaptions = async ({  description }) => {
+  if (!description) return [];
 
-  const prompt = description
-    ? `Generate 3 catchy and creative Instagram-style captions for the following description: "${description}". Keep them under 20 words.`
-    : `Generate 3 fun and aesthetic Instagram-style captions for a photo upload. Assume it’s a portrait or moment worth sharing.`;
-
+  const prompt =  `Generate 3 catchy and creative Instagram-style captions for the following description: "${description}". Keep them under 20 words.`
+    
   try {
     const response = await axios.post(
       OPENAI_API_URL,
