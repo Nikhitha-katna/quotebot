@@ -14,6 +14,7 @@ const Home = () => {
     try {
       const generatedCaptions = await generateCaptions({ description });
       setCaptions(generatedCaptions);
+      setDescription(""); // Clear the input after generating captions
     } catch (error) {
       console.error("Error generating captions:", error);
     } finally {
@@ -62,6 +63,7 @@ const Home = () => {
             className="mt-3 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-md font-semibold"
           >
             Generate Caption
+       
           </button>
         </div>
 
