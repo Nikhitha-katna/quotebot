@@ -1,9 +1,12 @@
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { generateCaptions } from "../components/CaptionGenerator";
+import DescriptionInput from "../components/DescriptionInput"; // Import the component
 
 const Home = () => {
   const [description, setDescription] = useState("");
+  const [tone, setTone] = useState("default");
   const [captions, setCaptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState(null);
@@ -12,9 +15,9 @@ const Home = () => {
     if (!description) return;
     setLoading(true);
     try {
-      const generatedCaptions = await generateCaptions({ description });
+      const generatedCaptions = await generateCaptions({ description, tone });
       setCaptions(generatedCaptions);
-      setDescription(""); // Clear the input after generating captions
+      setDescription(""); // Clear input after generating
     } catch (error) {
       console.error("Error generating captions:", error);
     } finally {
@@ -43,32 +46,17 @@ const Home = () => {
         Enter your thoughts and let <span className="font-bold">QuoteBot</span> create the perfect captions!
       </h3>
 
-      {/* Responsive Container */}
-
       <div className="flex flex-col md:flex-row w-full max-w-5xl gap-6">
-
         {/* Left - Description Input */}
-
-        <div className="flex flex-col bg-[#121416] p-6 rounded-xl shadow-md flex-1 min-h-[300px]">
-          <h2 className="text-white text-lg font-semibold mb-2">Enter a Description</h2>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Type your description..."
-            className="w-full h-full bg-[#1d2226] text-gray-300 p-3 rounded-lg border border-purple-600 focus:outline-none resize-none flex-grow"
-          />
-          <button
-            onClick={handleGenerateCaptions}
-            disabled={!description}
-            className="mt-3 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-md font-semibold"
-          >
-            Generate Caption
-       
-          </button>
-        </div>
+        <DescriptionInput 
+          description={description}
+          setDescription={setDescription}
+          tone={tone} 
+          setTone={setTone}
+          onGenerateCaption={handleGenerateCaptions}
+        />
 
         {/* Right - Generated Captions */}
-        
         <div className="flex flex-col bg-[#121416] p-6 rounded-xl shadow-md flex-1 min-h-[300px]">
           <h2 className="text-white text-lg font-semibold mb-2">Generated Captions</h2>
 
@@ -77,7 +65,10 @@ const Home = () => {
           ) : captions.length > 0 ? (
             <div className="flex flex-col gap-3 overflow-y-auto">
               {captions.map((caption, index) => (
-                <div key={index} className="flex justify-between items-center bg-[#1d2226] p-3 rounded-lg">
+                <div
+                  key={index}
+                  className="flex justify-between items-center bg-[#1d2226] p-3 rounded-lg"
+                >
                   <span className="text-gray-300 text-sm">{caption}</span>
                   <button
                     onClick={() => handleCopy(caption, index)}
@@ -86,7 +77,6 @@ const Home = () => {
                         ? "bg-blue-500 text-white"
                         : "bg-purple-600 text-white hover:bg-purple-700"
                     }`}
-                    style={{ cursor: "pointer" }}
                   >
                     {copiedIndex === index ? "Copied!" : "Copy"}
                   </button>

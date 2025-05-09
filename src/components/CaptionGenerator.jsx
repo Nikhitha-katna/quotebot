@@ -1,19 +1,21 @@
 import axios from "axios";
 
-const OPENAI_API_URL = "https://openrouter.ai/api/v1/chat/completions"; 
+const OPENAI_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 const OPENAI_API_KEY = import.meta.env.VITE_OPEN_ROUTER_AI_API_KEY;
-console.log("API Key", OPENAI_API_KEY);
 
-export const generateCaptions = async ({  description }) => {
+export const generateCaptions = async ({ description, tone = "default" }) => {
   if (!description) return [];
 
-  const prompt =  `Generate 3 catchy and creative Instagram-style captions for the following description: "${description}". Keep them under 20 words.`
-    
+  const prompt =
+    tone === "default"
+      ? `Generate 3 catchy and creative Instagram-style captions for the following description: "${description}". Keep them under 20 words.`
+      : `Generate 3 ${tone} Instagram-style captions for the following description: "${description}". Keep them under 20 words.`;
+
   try {
     const response = await axios.post(
       OPENAI_API_URL,
       {
-        model: "openai/gpt-3.5-turbo", 
+        model: "openai/gpt-3.5-turbo",
         messages: [{ role: "user", content: prompt }],
         max_tokens: 60,
         temperature: 0.7,
@@ -21,7 +23,7 @@ export const generateCaptions = async ({  description }) => {
       {
         headers: {
           Authorization: `Bearer ${OPENAI_API_KEY}`,
-          "HTTP-Referer": "http://localhost:5173",    
+          "HTTP-Referer": "http://localhost:5173",
           "X-Title": "QuoteBot",
           "Content-Type": "application/json",
         },

@@ -1,41 +1,41 @@
-import React, { useState } from "react";
+import React from "react";
 
-const DescriptionInput = ({ onInputChange, onGenerateCaption }) => {
-  const [description, setDescription] = useState("");
-
-  
+const DescriptionInput = ({ description, setDescription, tone, setTone, onGenerateCaption }) => {
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   };
 
-
-  const handleGenerateCaption = () => {
-    if (description) {
-      onGenerateCaption({ description });
-    }
+  const handleToneChange = (e) => {
+    setTone(e.target.value);
   };
 
   return (
-    <div
-      className="flex flex-col gap-1"
-      style={{
-        minHeight: "300px",
-      }}
-    >
-      <h2 className="text-white text-lg font-semibold mx-auto mb-2 mt-0">Enter a Description</h2>
+    <div className="flex flex-col bg-[#121416] p-6 rounded-xl shadow-md flex-1 min-h-[300px]">
+      <h2 className="text-white text-lg font-semibold mb-2">Enter a Description</h2>
       <textarea
         value={description}
         onChange={handleDescriptionChange}
         placeholder="Type your description..."
-        className="w-full h-full bg-[#121416] text-gray-300 p-3 rounded-lg border border-purple-600 focus:outline-none resize-none mb-1.5"
-        style={{
-          minHeight: "200px", 
-        }}
+        className="w-full h-full bg-[#1d2226] text-gray-300 p-3 rounded-lg border border-purple-600 focus:outline-none resize-none flex-grow"
       />
+
+      <label className="text-white text-sm mt-3 mb-1">Select Caption Tone</label>
+      <select
+        value={tone}
+        onChange={handleToneChange}
+        className="bg-[#1d2226] text-gray-300 p-2 rounded-md border border-purple-600 mb-3"
+      >
+        <option value="default">Default</option>
+        <option value="funny">Funny</option>
+        <option value="emotional">Emotional</option>
+        <option value="inspirational">Inspirational</option>
+        <option value="savage">Savage</option>
+      </select>
+
       <button
-        onClick={handleGenerateCaption}
+        onClick={onGenerateCaption}
         disabled={!description}
-        className="mt-0 w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-md font-semibold mb-5.5"
+        className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-md font-semibold"
       >
         Generate Caption
       </button>
